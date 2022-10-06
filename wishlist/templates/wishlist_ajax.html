@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $.get("/wishlist/json", function(data) {
+            data.forEach(data_element => {
+                var tr = $("<tr></tr>");
+                for (const [key, value] of Object.entries(data_element.fields)) {
+                    var td = $("<td></td>").html(value);
+                    tr.append(td);
+                }
+                $("#wishlist-table").append(tr);
+            });
+        });
+    });
+</script>
+{% endblock meta %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="navbar-brand mb-0 h1">{{nama}}</a>
+        </li>
+      </ul>
+    </div>  
+    <a class="navbar-brand" href="{% url 'wishlist:logout' %}">Logout</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+
+<table id="wishlist-table">
+    <tr>
+        <th>Nama Barang</th>
+        <th>Harga Barang</th>
+        <th>Deskripsi</th>
+    </tr>
+</table>
+
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+
+{% endblock content %}
